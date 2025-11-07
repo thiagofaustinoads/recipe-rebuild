@@ -14,7 +14,84 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      alimentos: {
+        Row: {
+          alergenos: string | null
+          armazenamento: string | null
+          atualizado_em: string | null
+          carboidrato_g: number
+          carboidrato_por_100g: number | null
+          categoria: string | null
+          criado_em: string | null
+          descricao: string | null
+          energia_kcal: number
+          energia_por_100g: number | null
+          fibra_g: number | null
+          gordura_g: number
+          gordura_por_100g: number | null
+          id: string
+          nome: string
+          outros: Json | null
+          peso_volume: string | null
+          porcao_amount: number
+          porcao_unit: string
+          preco_real: number | null
+          proteina_g: number
+          proteina_por_100g: number | null
+          sodio_mg: number | null
+        }
+        Insert: {
+          alergenos?: string | null
+          armazenamento?: string | null
+          atualizado_em?: string | null
+          carboidrato_g: number
+          carboidrato_por_100g?: number | null
+          categoria?: string | null
+          criado_em?: string | null
+          descricao?: string | null
+          energia_kcal: number
+          energia_por_100g?: number | null
+          fibra_g?: number | null
+          gordura_g: number
+          gordura_por_100g?: number | null
+          id?: string
+          nome: string
+          outros?: Json | null
+          peso_volume?: string | null
+          porcao_amount: number
+          porcao_unit: string
+          preco_real?: number | null
+          proteina_g: number
+          proteina_por_100g?: number | null
+          sodio_mg?: number | null
+        }
+        Update: {
+          alergenos?: string | null
+          armazenamento?: string | null
+          atualizado_em?: string | null
+          carboidrato_g?: number
+          carboidrato_por_100g?: number | null
+          categoria?: string | null
+          criado_em?: string | null
+          descricao?: string | null
+          energia_kcal?: number
+          energia_por_100g?: number | null
+          fibra_g?: number | null
+          gordura_g?: number
+          gordura_por_100g?: number | null
+          id?: string
+          nome?: string
+          outros?: Json | null
+          peso_volume?: string | null
+          porcao_amount?: number
+          porcao_unit?: string
+          preco_real?: number | null
+          proteina_g?: number
+          proteina_por_100g?: number | null
+          sodio_mg?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
