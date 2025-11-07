@@ -5,9 +5,14 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Activity } from "lucide-react";
 
-const BMICalculator = () => {
-  const [weight, setWeight] = useState("");
-  const [height, setHeight] = useState("");
+interface BMICalculatorProps {
+  weight: string;
+  height: string;
+  onWeightChange: (value: string) => void;
+  onHeightChange: (value: string) => void;
+}
+
+const BMICalculator = ({ weight, height, onWeightChange, onHeightChange }: BMICalculatorProps) => {
   const [result, setResult] = useState<{
     bmi: number;
     classification: string;
@@ -58,7 +63,7 @@ const BMICalculator = () => {
             type="number"
             placeholder="70"
             value={weight}
-            onChange={(e) => setWeight(e.target.value)}
+            onChange={(e) => onWeightChange(e.target.value)}
           />
         </div>
         <div className="space-y-2">
@@ -68,7 +73,7 @@ const BMICalculator = () => {
             type="number"
             placeholder="175"
             value={height}
-            onChange={(e) => setHeight(e.target.value)}
+            onChange={(e) => onHeightChange(e.target.value)}
           />
         </div>
         <Button onClick={calculateBMI} className="w-full">

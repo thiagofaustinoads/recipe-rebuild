@@ -6,11 +6,16 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Flame } from "lucide-react";
 
-const TMBCalculator = () => {
+interface TMBCalculatorProps {
+  weight: string;
+  height: string;
+  onWeightChange: (value: string) => void;
+  onHeightChange: (value: string) => void;
+}
+
+const TMBCalculator = ({ weight, height, onWeightChange, onHeightChange }: TMBCalculatorProps) => {
   const [sex, setSex] = useState("");
   const [age, setAge] = useState("");
-  const [weight, setWeight] = useState("");
-  const [height, setHeight] = useState("");
   const [activity, setActivity] = useState("");
   const [result, setResult] = useState<{
     tmb: number;
@@ -92,7 +97,7 @@ const TMBCalculator = () => {
               type="number"
               placeholder="70"
               value={weight}
-              onChange={(e) => setWeight(e.target.value)}
+              onChange={(e) => onWeightChange(e.target.value)}
             />
           </div>
           <div className="space-y-2">
@@ -102,7 +107,7 @@ const TMBCalculator = () => {
               type="number"
               placeholder="175"
               value={height}
-              onChange={(e) => setHeight(e.target.value)}
+              onChange={(e) => onHeightChange(e.target.value)}
             />
           </div>
         </div>

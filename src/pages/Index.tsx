@@ -7,6 +7,10 @@ import MacroCalculator from "@/components/calculators/MacroCalculator";
 import FoodManager from "@/components/foods/FoodManager";
 
 const Index = () => {
+  // Shared state for weight and height across calculators
+  const [sharedWeight, setSharedWeight] = useState("");
+  const [sharedHeight, setSharedHeight] = useState("");
+
   return (
     <div className="min-h-screen bg-secondary/30">
       {/* Header */}
@@ -40,8 +44,18 @@ const Index = () => {
 
           <TabsContent value="calculators" className="space-y-6">
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              <BMICalculator />
-              <TMBCalculator />
+              <BMICalculator 
+                weight={sharedWeight}
+                height={sharedHeight}
+                onWeightChange={setSharedWeight}
+                onHeightChange={setSharedHeight}
+              />
+              <TMBCalculator 
+                weight={sharedWeight}
+                height={sharedHeight}
+                onWeightChange={setSharedWeight}
+                onHeightChange={setSharedHeight}
+              />
               <MacroCalculator />
             </div>
           </TabsContent>
