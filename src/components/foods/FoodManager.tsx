@@ -24,7 +24,7 @@ const FoodManager = () => {
         query = query.ilike("nome", `%${searchTerm}%`);
       }
 
-      if (categoryFilter) {
+      if (categoryFilter && categoryFilter !== "all") {
         query = query.eq("categoria", categoryFilter);
       }
 
@@ -39,7 +39,9 @@ const FoodManager = () => {
     },
   });
 
-  const categories = Array.from(new Set(foods?.map((f) => f.categoria).filter(Boolean)));
+  const categories = Array.from(
+    new Set(foods?.map((f) => f.categoria).filter((cat) => cat && cat.trim() !== ""))
+  );
 
   return (
     <Card>
@@ -71,9 +73,9 @@ const FoodManager = () => {
               <SelectValue placeholder="Todas categorias" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Todas categorias</SelectItem>
+              <SelectItem value="all">Todas categorias</SelectItem>
               {categories.map((cat) => (
-                <SelectItem key={cat} value={cat || ""}>
+                <SelectItem key={cat} value={cat}>
                   {cat}
                 </SelectItem>
               ))}
