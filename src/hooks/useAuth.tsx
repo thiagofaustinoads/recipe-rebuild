@@ -76,13 +76,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .maybeSingle();
 
       if (error) {
-        console.error("Error checking admin role:", error);
         setIsAdmin(false);
       } else {
         setIsAdmin(!!data);
       }
     } catch (error) {
-      console.error("Error checking admin role:", error);
       setIsAdmin(false);
     } finally {
       setLoading(false);
