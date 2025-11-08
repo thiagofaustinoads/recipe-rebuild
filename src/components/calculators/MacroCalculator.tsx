@@ -6,9 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Target } from "lucide-react";
 
-const MacroCalculator = () => {
+interface MacroCalculatorProps {
+  weight: string;
+  onWeightChange: (value: string) => void;
+}
+
+const MacroCalculator = ({ weight, onWeightChange }: MacroCalculatorProps) => {
   const [calories, setCalories] = useState("");
-  const [weight, setWeight] = useState("");
   const [goal, setGoal] = useState("");
   const [result, setResult] = useState<{
     protein: { g: number; kcal: number; percent: number };
@@ -77,6 +81,7 @@ const MacroCalculator = () => {
           <Input
             id="macro-calories"
             type="number"
+            min="0"
             placeholder="2000"
             value={calories}
             onChange={(e) => setCalories(e.target.value)}
@@ -87,9 +92,10 @@ const MacroCalculator = () => {
           <Input
             id="macro-weight"
             type="number"
+            min="0"
             placeholder="70"
             value={weight}
-            onChange={(e) => setWeight(e.target.value)}
+            onChange={(e) => onWeightChange(e.target.value)}
           />
         </div>
         <div className="space-y-2">

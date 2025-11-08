@@ -61,6 +61,7 @@ const BMICalculator = ({ weight, height, onWeightChange, onHeightChange }: BMICa
           <Input
             id="weight"
             type="number"
+            min="0"
             placeholder="70"
             value={weight}
             onChange={(e) => onWeightChange(e.target.value)}
@@ -71,6 +72,7 @@ const BMICalculator = ({ weight, height, onWeightChange, onHeightChange }: BMICa
           <Input
             id="height"
             type="number"
+            min="0"
             placeholder="175"
             value={height}
             onChange={(e) => onHeightChange(e.target.value)}

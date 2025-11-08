@@ -83,6 +83,7 @@ const TMBCalculator = ({ weight, height, onWeightChange, onHeightChange }: TMBCa
             <Input
               id="tmb-age"
               type="number"
+              min="0"
               placeholder="30"
               value={age}
               onChange={(e) => setAge(e.target.value)}
@@ -95,6 +96,7 @@ const TMBCalculator = ({ weight, height, onWeightChange, onHeightChange }: TMBCa
             <Input
               id="tmb-weight"
               type="number"
+              min="0"
               placeholder="70"
               value={weight}
               onChange={(e) => onWeightChange(e.target.value)}
@@ -105,6 +107,7 @@ const TMBCalculator = ({ weight, height, onWeightChange, onHeightChange }: TMBCa
             <Input
               id="tmb-height"
               type="number"
+              min="0"
               placeholder="175"
               value={height}
               onChange={(e) => onHeightChange(e.target.value)}

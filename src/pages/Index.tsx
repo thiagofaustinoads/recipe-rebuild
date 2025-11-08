@@ -98,7 +98,10 @@ const Index = () => {
                 onWeightChange={setSharedWeight}
                 onHeightChange={setSharedHeight}
               />
-              <MacroCalculator />
+              <MacroCalculator 
+                weight={sharedWeight}
+                onWeightChange={setSharedWeight}
+              />
             </div>
           </TabsContent>
 
