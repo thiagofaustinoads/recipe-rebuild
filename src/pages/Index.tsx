@@ -1,29 +1,71 @@
 import { useState } from "react";
-import { Calculator, Apple, UtensilsCrossed, Target } from "lucide-react";
+import { Calculator, Apple, UtensilsCrossed, LogOut, LogIn } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
 import BMICalculator from "@/components/calculators/BMICalculator";
 import TMBCalculator from "@/components/calculators/TMBCalculator";
 import MacroCalculator from "@/components/calculators/MacroCalculator";
 import FoodManager from "@/components/foods/FoodManager";
+import { toast } from "@/hooks/use-toast";
 
 const Index = () => {
+  const { user, isAdmin, signOut } = useAuth();
+  const navigate = useNavigate();
+  
   // Shared state for weight and height across calculators
   const [sharedWeight, setSharedWeight] = useState("");
   const [sharedHeight, setSharedHeight] = useState("");
+
+  const handleAuthClick = () => {
+    if (user) {
+      signOut();
+      toast({
+        title: "Logout realizado",
+        description: "Até logo!",
+      });
+    } else {
+      navigate("/auth");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-secondary/30">
       {/* Header */}
       <header className="bg-card border-b border-border sticky top-0 z-10 shadow-sm">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-primary rounded-lg">
-              <Apple className="h-6 w-6 text-primary-foreground" />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary rounded-lg">
+                <Apple className="h-6 w-6 text-primary-foreground" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-foreground">NutriCalc Pro</h1>
+                <p className="text-sm text-muted-foreground">
+                  Gestão Nutricional Completa
+                  {isAdmin && <span className="ml-2 text-primary font-medium">• Admin</span>}
+                </p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">NutriCalc Pro</h1>
-              <p className="text-sm text-muted-foreground">Gestão Nutricional Completa</p>
-            </div>
+            <Button
+              variant={user ? "outline" : "default"}
+              size="sm"
+              onClick={handleAuthClick}
+              className="gap-2"
+            >
+              {user ? (
+                <>
+                  <LogOut className="h-4 w-4" />
+                  Sair
+                </>
+              ) : (
+                <>
+                  <LogIn className="h-4 w-4" />
+                  Entrar
+                </>
+              )}
+            </Button>
           </div>
         </div>
       </header>

@@ -6,11 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Search } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 import FoodTable from "./FoodTable";
 import AddFoodDialog from "./AddFoodDialog";
 import { toast } from "sonner";
 
 const FoodManager = () => {
+  const { isAdmin } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -51,10 +53,12 @@ const FoodManager = () => {
             <CardTitle>Gerenciamento de Alimentos</CardTitle>
             <CardDescription>Adicione e gerencie sua base de dados nutricional</CardDescription>
           </div>
-          <Button onClick={() => setIsAddDialogOpen(true)} className="gap-2">
-            <Plus className="h-4 w-4" />
-            Adicionar Alimento
-          </Button>
+          {isAdmin && (
+            <Button onClick={() => setIsAddDialogOpen(true)} className="gap-2">
+              <Plus className="h-4 w-4" />
+              Adicionar Alimento
+            </Button>
+          )}
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -83,7 +87,7 @@ const FoodManager = () => {
           </Select>
         </div>
 
-        <FoodTable foods={foods || []} isLoading={isLoading} onUpdate={refetch} />
+        <FoodTable foods={foods || []} isLoading={isLoading} onUpdate={refetch} isAdmin={isAdmin} />
       </CardContent>
 
       <AddFoodDialog

@@ -28,9 +28,10 @@ interface FoodTableProps {
   foods: Food[];
   isLoading: boolean;
   onUpdate: () => void;
+  isAdmin: boolean;
 }
 
-const FoodTable = ({ foods, isLoading, onUpdate }: FoodTableProps) => {
+const FoodTable = ({ foods, isLoading, onUpdate, isAdmin }: FoodTableProps) => {
   const handleDelete = async (id: string) => {
     if (!confirm("Deseja realmente excluir este alimento?")) return;
 
@@ -67,7 +68,7 @@ const FoodTable = ({ foods, isLoading, onUpdate }: FoodTableProps) => {
             <TableHead className="text-right">Gord (g)</TableHead>
             <TableHead>Alergênicos</TableHead>
             <TableHead className="text-right">Preço</TableHead>
-            <TableHead className="text-right">Ações</TableHead>
+            {isAdmin && <TableHead className="text-right">Ações</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -94,21 +95,23 @@ const FoodTable = ({ foods, isLoading, onUpdate }: FoodTableProps) => {
               <TableCell className="text-right">
                 {food.preco_real ? `R$ ${food.preco_real.toFixed(2)}` : "-"}
               </TableCell>
-              <TableCell className="text-right">
-                <div className="flex justify-end gap-2">
-                  <Button variant="ghost" size="icon" className="h-8 w-8">
-                    <Pencil className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-destructive hover:text-destructive"
-                    onClick={() => handleDelete(food.id)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </TableCell>
+              {isAdmin && (
+                <TableCell className="text-right">
+                  <div className="flex justify-end gap-2">
+                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-destructive hover:text-destructive"
+                      onClick={() => handleDelete(food.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>
