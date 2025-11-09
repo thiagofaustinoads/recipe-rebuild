@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Target } from "lucide-react";
 
@@ -66,6 +65,17 @@ const MacroCalculator = ({ weight, onWeightChange }: MacroCalculatorProps) => {
     });
   };
 
+  useEffect(() => {
+    const totalCalories = parseFloat(calories);
+    const weightKg = parseFloat(weight);
+
+    if (totalCalories > 0 && weightKg > 0 && goal) {
+      calculateMacros();
+    } else {
+      setResult(null);
+    }
+  }, [calories, weight, goal]);
+
   return (
     <Card className="h-full">
       <CardHeader>
@@ -111,9 +121,6 @@ const MacroCalculator = ({ weight, onWeightChange }: MacroCalculatorProps) => {
             </SelectContent>
           </Select>
         </div>
-        <Button onClick={calculateMacros} className="w-full">
-          Calcular Macros
-        </Button>
 
         {result && (
           <div className="mt-4 space-y-2">

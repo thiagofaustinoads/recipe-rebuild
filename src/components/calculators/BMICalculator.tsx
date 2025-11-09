@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import { Activity } from "lucide-react";
 
 interface BMICalculatorProps {
@@ -46,6 +45,17 @@ const BMICalculator = ({ weight, height, onWeightChange, onHeightChange }: BMICa
     setResult({ bmi: parseFloat(bmi.toFixed(1)), classification, color });
   };
 
+  useEffect(() => {
+    const weightKg = parseFloat(weight);
+    const heightM = parseFloat(height) / 100;
+
+    if (weightKg > 0 && heightM > 0) {
+      calculateBMI();
+    } else {
+      setResult(null);
+    }
+  }, [weight, height]);
+
   return (
     <Card className="h-full">
       <CardHeader>
@@ -78,9 +88,6 @@ const BMICalculator = ({ weight, height, onWeightChange, onHeightChange }: BMICa
             onChange={(e) => onHeightChange(e.target.value)}
           />
         </div>
-        <Button onClick={calculateBMI} className="w-full">
-          Calcular IMC
-        </Button>
 
         {result && (
           <div className="mt-4 p-4 rounded-lg bg-secondary border border-border">

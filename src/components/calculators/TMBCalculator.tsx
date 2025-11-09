@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Flame } from "lucide-react";
 
@@ -29,11 +28,10 @@ const TMBCalculator = ({ weight, height, onWeightChange, onHeightChange }: TMBCa
     const weightKg = parseFloat(weight);
     const heightCm = parseFloat(height);
     const ageYears = parseFloat(age);
-    const activityFactor = parseFloat(activity);
 
-    if (!weightKg || !heightCm || !ageYears || !activityFactor || !sex) return;
+    if (!weightKg || !heightCm || !ageYears || !sex || !activity) return;
 
-    // Mifflin-St Jeor formula
+    // Mifflin-St Jeor Formula
     let tmb: number;
     if (sex === "male") {
       tmb = 10 * weightKg + 6.25 * heightCm - 5 * ageYears + 5;
@@ -41,19 +39,37 @@ const TMBCalculator = ({ weight, height, onWeightChange, onHeightChange }: TMBCa
       tmb = 10 * weightKg + 6.25 * heightCm - 5 * ageYears - 161;
     }
 
-    const tdee = tmb * activityFactor;
-    const loss = tdee * 0.8; // -20%
-    const maintenance = tdee;
-    const gain = tdee * 1.15; // +15%
+    // Activity multipliers
+    const activityMultipliers: Record<string, number> = {
+      sedentary: 1.2,
+      light: 1.375,
+      moderate: 1.55,
+      active: 1.725,
+      veryActive: 1.9,
+    };
+
+    const tdee = tmb * activityMultipliers[activity];
 
     setResult({
       tmb: Math.round(tmb),
       tdee: Math.round(tdee),
-      loss: Math.round(loss),
-      maintenance: Math.round(maintenance),
-      gain: Math.round(gain),
+      loss: Math.round(tdee - 500),
+      maintenance: Math.round(tdee),
+      gain: Math.round(tdee + 500),
     });
   };
+
+  useEffect(() => {
+    const weightKg = parseFloat(weight);
+    const heightCm = parseFloat(height);
+    const ageYears = parseFloat(age);
+
+    if (weightKg > 0 && heightCm > 0 && ageYears > 0 && sex && activity) {
+      calculateTMB();
+    } else {
+      setResult(null);
+    }
+  }, [weight, height, age, sex, activity]);
 
   return (
     <Card className="h-full">
@@ -129,9 +145,6 @@ const TMBCalculator = ({ weight, height, onWeightChange, onHeightChange }: TMBCa
             </SelectContent>
           </Select>
         </div>
-        <Button onClick={calculateTMB} className="w-full">
-          Calcular TMB/TDEE
-        </Button>
 
         {result && (
           <div className="mt-4 space-y-3">
