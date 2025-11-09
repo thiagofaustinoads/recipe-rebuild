@@ -137,11 +137,11 @@ const TMBCalculator = ({ weight, height, onWeightChange, onHeightChange }: TMBCa
               <SelectValue placeholder="Selecione" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="1.2">Sedentário (pouco ou nenhum exercício)</SelectItem>
-              <SelectItem value="1.375">Levemente ativo (1-3 dias/semana)</SelectItem>
-              <SelectItem value="1.55">Moderadamente ativo (3-5 dias/semana)</SelectItem>
-              <SelectItem value="1.725">Muito ativo (6-7 dias/semana)</SelectItem>
-              <SelectItem value="1.9">Extremamente ativo (atleta)</SelectItem>
+              <SelectItem value="sedentary">Sedentário (pouco ou nenhum exercício)</SelectItem>
+              <SelectItem value="light">Levemente ativo (1-3 dias/semana)</SelectItem>
+              <SelectItem value="moderate">Moderadamente ativo (3-5 dias/semana)</SelectItem>
+              <SelectItem value="active">Muito ativo (6-7 dias/semana)</SelectItem>
+              <SelectItem value="veryActive">Extremamente ativo (atleta)</SelectItem>
             </SelectContent>
           </Select>
         </div>
