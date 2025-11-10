@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Target } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface MacroCalculatorProps {
   weight: string;
@@ -20,7 +22,7 @@ const MacroCalculator = ({ weight, onWeightChange, tdeeResult }: MacroCalculator
     carbs: { g: number; kcal: number; percent: number };
   } | null>(null);
 
-  const calculateMacros = () => {
+  const calculateMacros = async () => {
     const weightKg = parseFloat(weight);
     if (!weightKg || !goal || !tdeeResult) return;
 
@@ -57,7 +59,7 @@ const MacroCalculator = ({ weight, onWeightChange, tdeeResult }: MacroCalculator
     const carbsKcal = totalCalories - (proteinKcal + fatKcal);
     const carbsG = carbsKcal / 4;
 
-    setResult({
+    const calculatedResult = {
       calories: totalCalories,
       protein: {
         g: Math.round(proteinG),
@@ -74,7 +76,24 @@ const MacroCalculator = ({ weight, onWeightChange, tdeeResult }: MacroCalculator
         kcal: Math.round(carbsKcal),
         percent: Math.round((carbsKcal / totalCalories) * 100),
       },
-    });
+    };
+
+    setResult(calculatedResult);
+
+    // Save to database
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const { error } = await supabase.from("calculation_history").insert({
+        user_id: user.id,
+        calculation_type: "macro",
+        input_data: { weight: weightKg, goal },
+        result_data: calculatedResult,
+      });
+
+      if (error) {
+        console.error("Error saving Macro calculation:", error);
+      }
+    }
   };
 
   useEffect(() => {
