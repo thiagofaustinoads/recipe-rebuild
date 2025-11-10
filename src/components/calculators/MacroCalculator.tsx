@@ -8,22 +8,33 @@ import { Target } from "lucide-react";
 interface MacroCalculatorProps {
   weight: string;
   onWeightChange: (value: string) => void;
+  tdeeResult?: { loss: number; maintenance: number; gain: number } | null;
 }
 
-const MacroCalculator = ({ weight, onWeightChange }: MacroCalculatorProps) => {
-  const [calories, setCalories] = useState("");
+const MacroCalculator = ({ weight, onWeightChange, tdeeResult }: MacroCalculatorProps) => {
   const [goal, setGoal] = useState("");
   const [result, setResult] = useState<{
+    calories: number;
     protein: { g: number; kcal: number; percent: number };
     fat: { g: number; kcal: number; percent: number };
     carbs: { g: number; kcal: number; percent: number };
   } | null>(null);
 
   const calculateMacros = () => {
-    const totalCalories = parseFloat(calories);
     const weightKg = parseFloat(weight);
+    if (!weightKg || !goal || !tdeeResult) return;
 
-    if (!totalCalories || !weightKg || !goal) return;
+    // Get calories based on goal
+    let totalCalories: number;
+    if (goal === "loss") {
+      totalCalories = tdeeResult.loss;
+    } else if (goal === "gain") {
+      totalCalories = tdeeResult.gain;
+    } else {
+      totalCalories = tdeeResult.maintenance;
+    }
+
+    if (!totalCalories) return;
 
     // Define protein per kg based on goal
     let proteinPerKg: number;
@@ -47,6 +58,7 @@ const MacroCalculator = ({ weight, onWeightChange }: MacroCalculatorProps) => {
     const carbsG = carbsKcal / 4;
 
     setResult({
+      calories: totalCalories,
       protein: {
         g: Math.round(proteinG),
         kcal: Math.round(proteinKcal),
@@ -66,15 +78,14 @@ const MacroCalculator = ({ weight, onWeightChange }: MacroCalculatorProps) => {
   };
 
   useEffect(() => {
-    const totalCalories = parseFloat(calories);
     const weightKg = parseFloat(weight);
 
-    if (totalCalories > 0 && weightKg > 0 && goal) {
+    if (weightKg > 0 && goal && tdeeResult) {
       calculateMacros();
     } else {
       setResult(null);
     }
-  }, [calories, weight, goal]);
+  }, [weight, goal, tdeeResult]);
 
   return (
     <Card className="h-full">
@@ -86,17 +97,13 @@ const MacroCalculator = ({ weight, onWeightChange }: MacroCalculatorProps) => {
         <CardDescription>Distribua suas macros por objetivo</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="macro-calories">Calorias Totais</Label>
-          <Input
-            id="macro-calories"
-            type="number"
-            min="0"
-            placeholder="2000"
-            value={calories}
-            onChange={(e) => setCalories(e.target.value)}
-          />
-        </div>
+        {!tdeeResult && (
+          <div className="p-3 rounded-lg bg-muted/50 border border-border">
+            <p className="text-sm text-muted-foreground">
+              Complete a Calculadora TMB/TDEE para obter as calorias automaticamente
+            </p>
+          </div>
+        )}
         <div className="space-y-2">
           <Label htmlFor="macro-weight">Peso Corporal (kg)</Label>
           <Input
@@ -124,6 +131,10 @@ const MacroCalculator = ({ weight, onWeightChange }: MacroCalculatorProps) => {
 
         {result && (
           <div className="mt-4 space-y-2">
+            <div className="p-3 rounded-lg bg-primary/10 border border-primary/20 mb-3">
+              <div className="text-sm font-medium text-foreground">Calorias do TDEE</div>
+              <div className="text-2xl font-bold text-primary">{result.calories} kcal</div>
+            </div>
             <div className="p-3 rounded-lg bg-info/10 border border-info/20">
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium text-foreground">Proteína</span>

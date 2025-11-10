@@ -17,6 +17,7 @@ const Index = () => {
   // Shared state for weight and height across calculators
   const [sharedWeight, setSharedWeight] = useState("");
   const [sharedHeight, setSharedHeight] = useState("");
+  const [sharedTDEEResult, setSharedTDEEResult] = useState<{ loss: number; maintenance: number; gain: number } | null>(null);
 
   const handleAuthClick = () => {
     if (user) {
@@ -97,10 +98,12 @@ const Index = () => {
                 height={sharedHeight}
                 onWeightChange={setSharedWeight}
                 onHeightChange={setSharedHeight}
+                onResultChange={setSharedTDEEResult}
               />
               <MacroCalculator 
                 weight={sharedWeight}
                 onWeightChange={setSharedWeight}
+                tdeeResult={sharedTDEEResult}
               />
             </div>
           </TabsContent>

@@ -10,9 +10,10 @@ interface TMBCalculatorProps {
   height: string;
   onWeightChange: (value: string) => void;
   onHeightChange: (value: string) => void;
+  onResultChange?: (result: { loss: number; maintenance: number; gain: number } | null) => void;
 }
 
-const TMBCalculator = ({ weight, height, onWeightChange, onHeightChange }: TMBCalculatorProps) => {
+const TMBCalculator = ({ weight, height, onWeightChange, onHeightChange, onResultChange }: TMBCalculatorProps) => {
   const [sex, setSex] = useState("");
   const [age, setAge] = useState("");
   const [activity, setActivity] = useState("");
@@ -50,12 +51,19 @@ const TMBCalculator = ({ weight, height, onWeightChange, onHeightChange }: TMBCa
 
     const tdee = tmb * activityMultipliers[activity];
 
-    setResult({
+    const calculatedResult = {
       tmb: Math.round(tmb),
       tdee: Math.round(tdee),
       loss: Math.round(tdee - 500),
       maintenance: Math.round(tdee),
       gain: Math.round(tdee + 500),
+    };
+
+    setResult(calculatedResult);
+    onResultChange?.({
+      loss: calculatedResult.loss,
+      maintenance: calculatedResult.maintenance,
+      gain: calculatedResult.gain,
     });
   };
 
@@ -68,6 +76,7 @@ const TMBCalculator = ({ weight, height, onWeightChange, onHeightChange }: TMBCa
       calculateTMB();
     } else {
       setResult(null);
+      onResultChange?.(null);
     }
   }, [weight, height, age, sex, activity]);
 
