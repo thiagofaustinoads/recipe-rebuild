@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Flame } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface TMBCalculatorProps {
   weight: string;
@@ -67,6 +68,24 @@ const TMBCalculator = ({ weight, height, onWeightChange, onHeightChange, onResul
     });
   };
 
+  const saveToDatabase = async (calculationResult: typeof result) => {
+    if (!calculationResult) return;
+    
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      await supabase.from('calculation_history').insert({
+        user_id: user.id,
+        calculation_type: 'tmb',
+        input_data: { weight, height, age, sex, activity },
+        result_data: calculationResult
+      });
+    } catch (error) {
+      console.error('Error saving calculation:', error);
+    }
+  };
+
   useEffect(() => {
     const weightKg = parseFloat(weight);
     const heightCm = parseFloat(height);
@@ -79,6 +98,12 @@ const TMBCalculator = ({ weight, height, onWeightChange, onHeightChange, onResul
       onResultChange?.(null);
     }
   }, [weight, height, age, sex, activity]);
+
+  useEffect(() => {
+    if (result) {
+      saveToDatabase(result);
+    }
+  }, [result]);
 
   return (
     <Card className="h-full">

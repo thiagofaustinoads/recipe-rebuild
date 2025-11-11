@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Target } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface MacroCalculatorProps {
   weight: string;
@@ -77,6 +78,24 @@ const MacroCalculator = ({ weight, onWeightChange, tdeeResult }: MacroCalculator
     });
   };
 
+  const saveToDatabase = async (calculationResult: typeof result) => {
+    if (!calculationResult) return;
+    
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      await supabase.from('calculation_history').insert({
+        user_id: user.id,
+        calculation_type: 'macro',
+        input_data: { weight, goal, tdeeResult },
+        result_data: calculationResult
+      });
+    } catch (error) {
+      console.error('Error saving calculation:', error);
+    }
+  };
+
   useEffect(() => {
     const weightKg = parseFloat(weight);
 
@@ -86,6 +105,12 @@ const MacroCalculator = ({ weight, onWeightChange, tdeeResult }: MacroCalculator
       setResult(null);
     }
   }, [weight, goal, tdeeResult]);
+
+  useEffect(() => {
+    if (result) {
+      saveToDatabase(result);
+    }
+  }, [result]);
 
   return (
     <Card className="h-full">
