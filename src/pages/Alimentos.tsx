@@ -1,12 +1,195 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Search, Edit2, Trash2, X, Check, TrendingUp } from 'lucide-react';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { useAuth } from "@/hooks/useAuth";
 
 // Simula dados da tela anterior (recuperados automaticamente)
+const { user } = useAuth(); // ← Adicione aqui
+
 const getDadosTelaAnterior = () => {
   return {
-    userId: 'user-123',
-    userName: 'João Silva',
+    userId: user?.id || 'guest',
+    userName: user?.user_metadata?.full_name || user?.email || 'Visitante',
+    dataSessao: new Date().toISOString(),
+    metaNutricional: {
+      caloriasAlvo: 2000,
+      carboidratosAlvo: 250,
+      proteinasAlvo: 150,
+      gordurasAlvo: 65
+    }
+  };
+};
+const { user } = useAuth(); // ← Adicione aqui
+
+const getDadosTelaAnterior = () => {
+  return {
+    userId: user?.id || 'guest',
+    userName: user?.user_metadata?.full_name || user?.email || 'Visitante',
+    dataSessao: new Date().toISOString(),
+    metaNutricional: {
+      caloriasAlvo: 2000,
+      carboidratosAlvo: 250,
+      proteinasAlvo: 150,
+      gordurasAlvo: 65
+    }
+  };
+};
+const { user } = useAuth(); // ← Adicione aqui
+
+const getDadosTelaAnterior = () => {
+  return {
+    userId: user?.id || 'guest',
+    userName: user?.user_metadata?.full_name || user?.email || 'Visitante',
+    dataSessao: new Date().toISOString(),
+    metaNutricional: {
+      caloriasAlvo: 2000,
+      carboidratosAlvo: 250,
+      proteinasAlvo: 150,
+      gordurasAlvo: 65
+    }
+  };
+};
+const { user } = useAuth(); // ← Adicione aqui
+
+const getDadosTelaAnterior = () => {
+  return {
+    userId: user?.id || 'guest',
+    userName: user?.user_metadata?.full_name || user?.email || 'Visitante',
+    dataSessao: new Date().toISOString(),
+    metaNutricional: {
+      caloriasAlvo: 2000,
+      carboidratosAlvo: 250,
+      proteinasAlvo: 150,
+      gordurasAlvo: 65
+    }
+  };
+};
+const { user } = useAuth(); // ← Adicione aqui
+
+const getDadosTelaAnterior = () => {
+  return {
+    userId: user?.id || 'guest',
+    userName: user?.user_metadata?.full_name || user?.email || 'Visitante',
+    dataSessao: new Date().toISOString(),
+    metaNutricional: {
+      caloriasAlvo: 2000,
+      carboidratosAlvo: 250,
+      proteinasAlvo: 150,
+      gordurasAlvo: 65
+    }
+  };
+};
+const { user } = useAuth(); // ← Adicione aqui
+
+const getDadosTelaAnterior = () => {
+  return {
+    userId: user?.id || 'guest',
+    userName: user?.user_metadata?.full_name || user?.email || 'Visitante',
+    dataSessao: new Date().toISOString(),
+    metaNutricional: {
+      caloriasAlvo: 2000,
+      carboidratosAlvo: 250,
+      proteinasAlvo: 150,
+      gordurasAlvo: 65
+    }
+  };
+};
+const { user } = useAuth(); // ← Adicione aqui
+
+const getDadosTelaAnterior = () => {
+  return {
+    userId: user?.id || 'guest',
+    userName: user?.user_metadata?.full_name || user?.email || 'Visitante',
+    dataSessao: new Date().toISOString(),
+    metaNutricional: {
+      caloriasAlvo: 2000,
+      carboidratosAlvo: 250,
+      proteinasAlvo: 150,
+      gordurasAlvo: 65
+    }
+  };
+};
+const { user } = useAuth(); // ← Adicione aqui
+
+const getDadosTelaAnterior = () => {
+  return {
+    userId: user?.id || 'guest',
+    userName: user?.user_metadata?.full_name || user?.email || 'Visitante',
+    dataSessao: new Date().toISOString(),
+    metaNutricional: {
+      caloriasAlvo: 2000,
+      carboidratosAlvo: 250,
+      proteinasAlvo: 150,
+      gordurasAlvo: 65
+    }
+  };
+};
+const { user } = useAuth(); // ← Adicione aqui
+
+const getDadosTelaAnterior = () => {
+  return {
+    userId: user?.id || 'guest',
+    userName: user?.user_metadata?.full_name || user?.email || 'Visitante',
+    dataSessao: new Date().toISOString(),
+    metaNutricional: {
+      caloriasAlvo: 2000,
+      carboidratosAlvo: 250,
+      proteinasAlvo: 150,
+      gordurasAlvo: 65
+    }
+  };
+};
+const { user } = useAuth(); // ← Adicione aqui
+
+const getDadosTelaAnterior = () => {
+  return {
+    userId: user?.id || 'guest',
+    userName: user?.user_metadata?.full_name || user?.email || 'Visitante',
+    dataSessao: new Date().toISOString(),
+    metaNutricional: {
+      caloriasAlvo: 2000,
+      carboidratosAlvo: 250,
+      proteinasAlvo: 150,
+      gordurasAlvo: 65
+    }
+  };
+};
+const { user } = useAuth(); // ← Adicione aqui
+
+const getDadosTelaAnterior = () => {
+  return {
+    userId: user?.id || 'guest',
+    userName: user?.user_metadata?.full_name || user?.email || 'Visitante',
+    dataSessao: new Date().toISOString(),
+    metaNutricional: {
+      caloriasAlvo: 2000,
+      carboidratosAlvo: 250,
+      proteinasAlvo: 150,
+      gordurasAlvo: 65
+    }
+  };
+};
+const { user } = useAuth(); // ← Adicione aqui
+
+const getDadosTelaAnterior = () => {
+  return {
+    userId: user?.id || 'guest',
+    userName: user?.user_metadata?.full_name || user?.email || 'Visitante',
+    dataSessao: new Date().toISOString(),
+    metaNutricional: {
+      caloriasAlvo: 2000,
+      carboidratosAlvo: 250,
+      proteinasAlvo: 150,
+      gordurasAlvo: 65
+    }
+  };
+};
+const { user } = useAuth(); // ← Adicione aqui
+
+const getDadosTelaAnterior = () => {
+  return {
+    userId: user?.id || 'guest',
+    userName: user?.user_metadata?.full_name || user?.email || 'Visitante',
     dataSessao: new Date().toISOString(),
     metaNutricional: {
       caloriasAlvo: 2000,
