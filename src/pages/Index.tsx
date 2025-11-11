@@ -7,6 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import BMICalculator from "@/components/calculators/BMICalculator";
 import TMBCalculator from "@/components/calculators/TMBCalculator";
 import MacroCalculator from "@/components/calculators/MacroCalculator";
+import CalculationHistory from "@/components/calculators/CalculationHistory";
 import FoodManager from "@/components/foods/FoodManager";
 import { toast } from "@/hooks/use-toast";
 
@@ -106,6 +107,12 @@ const Index = () => {
                 tdeeResult={sharedTDEEResult}
               />
             </div>
+            
+            {user && (
+              <div className="mt-8">
+                <CalculationHistory />
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="foods">

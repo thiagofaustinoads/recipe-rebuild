@@ -92,6 +92,33 @@ export type Database = {
         }
         Relationships: []
       }
+      calculation_history: {
+        Row: {
+          calculation_type: string
+          created_at: string
+          id: string
+          input_data: Json
+          result_data: Json
+          user_id: string
+        }
+        Insert: {
+          calculation_type: string
+          created_at?: string
+          id?: string
+          input_data: Json
+          result_data: Json
+          user_id: string
+        }
+        Update: {
+          calculation_type?: string
+          created_at?: string
+          id?: string
+          input_data?: Json
+          result_data?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null
