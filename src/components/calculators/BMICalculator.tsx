@@ -3,8 +3,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Activity } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 
 interface BMICalculatorProps {
   weight: string;
@@ -20,7 +18,7 @@ const BMICalculator = ({ weight, height, onWeightChange, onHeightChange }: BMICa
     color: string;
   } | null>(null);
 
-  const calculateBMI = async () => {
+  const calculateBMI = () => {
     const weightKg = parseFloat(weight);
     const heightM = parseFloat(height) / 100;
 
@@ -44,23 +42,7 @@ const BMICalculator = ({ weight, height, onWeightChange, onHeightChange }: BMICa
       color = "text-destructive";
     }
 
-    const calculatedResult = { bmi: parseFloat(bmi.toFixed(1)), classification, color };
-    setResult(calculatedResult);
-
-    // Save to database
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      const { error } = await supabase.from("calculation_history").insert({
-        user_id: user.id,
-        calculation_type: "bmi",
-        input_data: { weight: weightKg, height: parseFloat(height) },
-        result_data: calculatedResult,
-      });
-
-      if (error) {
-        console.error("Error saving BMI calculation:", error);
-      }
-    }
+    setResult({ bmi: parseFloat(bmi.toFixed(1)), classification, color });
   };
 
   useEffect(() => {

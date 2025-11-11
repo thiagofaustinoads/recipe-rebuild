@@ -4,8 +4,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Flame } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 
 interface TMBCalculatorProps {
   weight: string;
@@ -27,7 +25,7 @@ const TMBCalculator = ({ weight, height, onWeightChange, onHeightChange, onResul
     gain: number;
   } | null>(null);
 
-  const calculateTMB = async () => {
+  const calculateTMB = () => {
     const weightKg = parseFloat(weight);
     const heightCm = parseFloat(height);
     const ageYears = parseFloat(age);
@@ -67,21 +65,6 @@ const TMBCalculator = ({ weight, height, onWeightChange, onHeightChange, onResul
       maintenance: calculatedResult.maintenance,
       gain: calculatedResult.gain,
     });
-
-    // Save to database
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      const { error } = await supabase.from("calculation_history").insert({
-        user_id: user.id,
-        calculation_type: "tmb",
-        input_data: { weight: weightKg, height: heightCm, age: ageYears, sex, activity },
-        result_data: calculatedResult,
-      });
-
-      if (error) {
-        console.error("Error saving TMB calculation:", error);
-      }
-    }
   };
 
   useEffect(() => {
