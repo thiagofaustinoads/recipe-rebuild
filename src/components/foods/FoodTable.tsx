@@ -1,6 +1,5 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Pencil, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -8,20 +7,10 @@ import { toast } from "sonner";
 interface Food {
   id: string;
   nome: string;
-  categoria: string | null;
-  descricao: string | null;
-  peso_volume: string | null;
-  preco_real: number | null;
-  alergenos: string | null;
-  armazenamento: string | null;
-  porcao_amount: number;
-  porcao_unit: string;
   energia_kcal: number;
   proteina_g: number;
   carboidrato_g: number;
   gordura_g: number;
-  fibra_g: number | null;
-  sodio_mg: number | null;
 }
 
 interface FoodTableProps {
@@ -29,9 +18,10 @@ interface FoodTableProps {
   isLoading: boolean;
   onUpdate: () => void;
   isAdmin: boolean;
+  onEdit: (food: Food) => void;
 }
 
-const FoodTable = ({ foods, isLoading, onUpdate, isAdmin }: FoodTableProps) => {
+const FoodTable = ({ foods, isLoading, onUpdate, isAdmin, onEdit }: FoodTableProps) => {
   const handleDelete = async (id: string) => {
     if (!confirm("Deseja realmente excluir este alimento?")) return;
 
@@ -60,14 +50,10 @@ const FoodTable = ({ foods, isLoading, onUpdate, isAdmin }: FoodTableProps) => {
         <TableHeader>
           <TableRow>
             <TableHead>Nome</TableHead>
-            <TableHead>Categoria</TableHead>
-            <TableHead>Porção</TableHead>
-            <TableHead className="text-right">Kcal</TableHead>
-            <TableHead className="text-right">Prot (g)</TableHead>
-            <TableHead className="text-right">Carb (g)</TableHead>
-            <TableHead className="text-right">Gord (g)</TableHead>
-            <TableHead>Alergênicos</TableHead>
-            <TableHead className="text-right">Preço</TableHead>
+            <TableHead className="text-right">Calorias (kcal)</TableHead>
+            <TableHead className="text-right">Carboidratos (g)</TableHead>
+            <TableHead className="text-right">Proteínas (g)</TableHead>
+            <TableHead className="text-right">Gorduras (g)</TableHead>
             {isAdmin && <TableHead className="text-right">Ações</TableHead>}
           </TableRow>
         </TableHeader>
@@ -75,30 +61,19 @@ const FoodTable = ({ foods, isLoading, onUpdate, isAdmin }: FoodTableProps) => {
           {foods.map((food) => (
             <TableRow key={food.id}>
               <TableCell className="font-medium">{food.nome}</TableCell>
-              <TableCell>
-                {food.categoria && (
-                  <Badge variant="secondary" className="text-xs">
-                    {food.categoria}
-                  </Badge>
-                )}
-              </TableCell>
-              <TableCell className="text-sm text-muted-foreground">
-                {food.porcao_amount} {food.porcao_unit}
-              </TableCell>
-              <TableCell className="text-right font-semibold">{food.energia_kcal}</TableCell>
-              <TableCell className="text-right">{food.proteina_g}</TableCell>
-              <TableCell className="text-right">{food.carboidrato_g}</TableCell>
-              <TableCell className="text-right">{food.gordura_g}</TableCell>
-              <TableCell className="text-sm text-muted-foreground max-w-[150px] truncate">
-                {food.alergenos || "-"}
-              </TableCell>
-              <TableCell className="text-right">
-                {food.preco_real ? `R$ ${food.preco_real.toFixed(2)}` : "-"}
-              </TableCell>
+              <TableCell className="text-right font-semibold">{food.energia_kcal.toFixed(1)}</TableCell>
+              <TableCell className="text-right">{food.carboidrato_g.toFixed(1)}</TableCell>
+              <TableCell className="text-right">{food.proteina_g.toFixed(1)}</TableCell>
+              <TableCell className="text-right">{food.gordura_g.toFixed(1)}</TableCell>
               {isAdmin && (
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="h-8 w-8"
+                      onClick={() => onEdit(food)}
+                    >
                       <Pencil className="h-4 w-4" />
                     </Button>
                     <Button
